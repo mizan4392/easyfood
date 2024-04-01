@@ -1,5 +1,6 @@
 import { useMutation } from "react-query";
 import { postHeader } from "./http";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -10,9 +11,12 @@ type CreateUserRequest = {
 };
 
 export const useCreateMyUser = () => {
+  const {getAccessTokenSilently} = useAuth0()
   const createUserRequest = async (data: CreateUserRequest) => {
     const url = `${API_BASE_URL}/user/create`;
-    const options = postHeader(data);
+    const accessToken = await getAccessTokenSilently();
+    console.log(accessToken)
+    const options = postHeader(data,accessToken);
     const response = await fetch(url, options);
 
     if (!response.ok) {
