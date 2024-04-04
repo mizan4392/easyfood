@@ -13,8 +13,8 @@ export default function Auth0ProviderWithNavigate({ children }: Props) {
   const domain = import.meta.env.VITE_AUTH0_DOMAIN;
   const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
   const redirectUri = import.meta.env.VITE_AUTH0_CALLBACK_URI;
-
-  if (!domain || !clientId || !redirectUri) {
+  const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
+  if (!domain || !clientId || !redirectUri !== !audience) {
     throw new Error(
       "Auth0ProviderWithNavigate: Missing environment variables. Make sure to define VITE_AUTH0_DOMAIN, VITE_AUTH0_CLIENT_ID, and VITE_AUTH0_CALLBACK_URI in your .env file"
     );
@@ -30,6 +30,7 @@ export default function Auth0ProviderWithNavigate({ children }: Props) {
       clientId={clientId}
       authorizationParams={{
         redirect_uri: redirectUri,
+        audience: audience,
       }}
       onRedirectCallback={onRedirectCallback}
     >
