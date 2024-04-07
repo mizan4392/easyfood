@@ -24,3 +24,26 @@ export class UserDto {
   @IsOptional()
   imageUrl?: string;
 }
+
+export class UpdateUserDto {
+  @IsString()
+  @IsOptional()
+  name?: string;
+  @IsString()
+  @IsOptional()
+  addressLine1?: string;
+  @IsString()
+  @IsOptional()
+  city?: string;
+  @IsString()
+  @IsOptional()
+  country?: string;
+  @IsString()
+  @IsOptional()
+  imageUrl?: string;
+}
+
+export class AuthUser {
+  auth0Id: string;
+  userId: string;
+}

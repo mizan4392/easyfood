@@ -6,10 +6,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+
 import { expressJwtSecret } from 'jwks-rsa';
+
 import { promisify } from 'util';
 
-const { expressjwt: jwt } = require('express-jwt');
+const { expressjwt: jwta } = require('express-jwt');
 
 @Injectable()
 export class Auth0AuthorizationGuard implements CanActivate {
@@ -25,7 +27,7 @@ export class Auth0AuthorizationGuard implements CanActivate {
     const response = context.getArgByIndex(1);
 
     const checkJwt = promisify(
-      jwt({
+      jwta({
         secret: expressJwtSecret({
           cache: true,
           rateLimit: true,
@@ -43,6 +45,7 @@ export class Auth0AuthorizationGuard implements CanActivate {
 
       return true;
     } catch (error) {
+      console.log('error', error);
       throw new UnauthorizedException('Requires authentication');
     }
   }
