@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -11,6 +11,6 @@ export class AppController {
   }
   @Get('health')
   getHealth(): string {
-    return 'Health check passed!';
+    throw new HttpException('Health check passed!', HttpStatus.OK);
   }
 }
