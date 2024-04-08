@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './User.schema';
@@ -33,6 +37,17 @@ export class UserService {
     return await this.userModel
       .findOneAndUpdate({ _id: userId }, updateData)
       .exec();
-    // const existingUser = await this.userModel.findOne
+  }
+
+  async getCurrentUser(userId: string) {
+    try {
+      const user = await this.userModel.findOne({ _id: userId });
+      if (!user) {
+        throw new BadRequestException('User Not Found');
+      }
+      return user;
+    } catch (e) {
+      throw new InternalServerErrorException('Something went wrong');
+    }
   }
 }

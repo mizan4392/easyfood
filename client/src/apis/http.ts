@@ -19,3 +19,13 @@ export const updateHeader = (data: unknown, accessToken: string) => {
     body: JSON.stringify(data),
   };
 };
+
+export const getHeader = (accessToken: string) => {
+  return {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  };
+};
