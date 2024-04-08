@@ -8,3 +8,14 @@ export const postHeader = (data: unknown, accessToken: string) => {
     body: JSON.stringify(data),
   };
 };
+
+export const updateHeader = (data: unknown, accessToken: string) => {
+  return {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+};
