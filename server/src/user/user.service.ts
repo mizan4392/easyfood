@@ -29,8 +29,10 @@ export class UserService {
       return new BadRequestException('user Not found');
     }
     const updateData = filterUndefinedData(data);
-    console.log('updateData', updateData);
-    console.log('existingUser', existingUser);
+
+    return await this.userModel
+      .findOneAndUpdate({ _id: userId }, updateData)
+      .exec();
     // const existingUser = await this.userModel.findOne
   }
 }

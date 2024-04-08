@@ -7,7 +7,7 @@ import UserProfilePage from './pages/UserProfilePage';
 function AppRoutes() {
     return (
         <Routes>
-            <Route path="/" element={<Layout showHero={false}><HomePage/></Layout>} />
+            <Route path="/" element={<Layout showHero={true}><HomePage/></Layout>} />
             <Route path='auth-callback' element={<AuthCallBackPage/>} />
             <Route path="/profile" element={<Layout><UserProfilePage/></Layout>} />
             <Route path="*" element={<Navigate to={'/'}/>} />
