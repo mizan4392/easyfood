@@ -21,8 +21,9 @@ export class UserController {
     return this.userService.updateUser(body, user.userId);
   }
 
-  @Get('fetch')
-  fetchUsers() {
-    return 'unprotected route';
+  @Get('current-user')
+  @UseGuards(AuthorizationGuard)
+  getCurrentUser(@CurrentUser() user: AuthUser) {
+    return this.userService.getCurrentUser(user.userId);
   }
 }
