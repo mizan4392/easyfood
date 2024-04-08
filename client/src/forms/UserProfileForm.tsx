@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { User } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
