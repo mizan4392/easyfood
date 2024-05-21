@@ -7,6 +7,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 
+import { FileUploadModule } from './file-upload/file-upload.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -14,6 +16,8 @@ import { ConfigModule } from '@nestjs/config';
     }),
     MongooseModule.forRoot(process.env.MONGO_DB_URI),
     UserModule,
+
+    FileUploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],
