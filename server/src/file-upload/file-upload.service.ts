@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { v2 } from 'cloudinary';
 import { readFileSync } from 'fs';
-
+import * as fs from 'fs';
 @Injectable()
 export class FileUploadService {
   constructor() {
@@ -28,6 +28,9 @@ export class FileUploadService {
       });
 
       const uploadResults = await Promise.all(uploadPromises);
+      imgPaths.forEach((path) => {
+        fs.unlinkSync(path);
+      });
       return uploadResults;
     } catch (error) {
       console.log(error);
