@@ -13,5 +13,6 @@ import { storage } from 'src/util/multer';
   ],
   controllers: [FileUploadController],
   providers: [FileUploadService],
+  exports: [FileUploadService],
 })
 export class FileUploadModule {}
