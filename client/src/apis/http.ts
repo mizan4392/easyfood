@@ -9,6 +9,16 @@ export const postHeader = (data: unknown, accessToken: string) => {
   };
 };
 
+export const postDataAndFileHeader = (data: FormData, accessToken: string) => {
+  return {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: data,
+  };
+};
+
 export const updateHeader = (data: unknown, accessToken: string) => {
   return {
     method: "PATCH",
