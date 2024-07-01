@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   UploadedFiles,
   UseGuards,
@@ -33,5 +34,11 @@ export class MyRestaurantController {
       user.userId,
       filepaths,
     );
+  }
+
+  @Get()
+  @UseGuards(AuthorizationGuard)
+  getMyRestaurant(@CurrentUser() user: AuthUser) {
+    return this.myRestaurantService.getMyRestaurant(user.userId);
   }
 }

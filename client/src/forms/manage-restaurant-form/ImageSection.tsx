@@ -6,18 +6,28 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { useFormContext } from "react-hook-form";
 
 export default function ImageSection() {
-  const { control } = useFormContext();
+  const { control, watch } = useFormContext();
+  const imageFile = watch("imgUrl");
   return (
     <div className=" space-y-2">
       <div>
         <h2 className=" text-2xl font-bold">Image</h2>
         <FormDescription>upload an image of your restaurant</FormDescription>
       </div>
-      <div className=" flex flex-col gap-8 w-[50%]">
+      <div className=" flex flex-col gap-8 md:w-[50%]">
+        {imageFile?.length && (
+          <AspectRatio ratio={16 / 9}>
+            <img
+              src={imageFile[0]}
+              alt="restaurant"
+              className=" rounded-md object-cover w-full h-full"
+            />
+          </AspectRatio>
+        )}
         <FormField
           control={control}
           name="imageFile"
