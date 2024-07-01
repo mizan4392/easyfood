@@ -1,5 +1,5 @@
 import { postDataAndFileHeader } from "./http";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
 import { Restaurant } from "@/types";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -21,9 +21,7 @@ export const useCreateMyRestaurantRequest = () => {
     isLoading,
     isError,
     isSuccess,
-    error,
   } = useMutation(createUserRequest);
-  console.log(isLoading, isError, isSuccess, error);
 
   if (isSuccess) {
     toast.success("Restaurant created successfully");
@@ -34,5 +32,32 @@ export const useCreateMyRestaurantRequest = () => {
   return {
     createRestaurant,
     isLoading,
+  };
+};
+
+export const useGetMyRestaurantRequest = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  const getMyRestaurantRequest = async (): Promise<Restaurant> => {
+    const url = `${API_BASE_URL}/my-restaurant`;
+    const accessToken = await getAccessTokenSilently();
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch restaurant");
+    }
+    return response.json();
+  };
+  const { data, isLoading, isError } = useQuery(
+    "my-restaurant",
+    getMyRestaurantRequest
+  );
+
+  return {
+    myRestaurant: data,
+    isLoading,
+    isError,
   };
 };

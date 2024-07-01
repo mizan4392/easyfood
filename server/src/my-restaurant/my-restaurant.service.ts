@@ -31,4 +31,8 @@ export class MyRestaurantService {
     await restaurant.save();
     return 'This action adds a new restaurant';
   }
+
+  getMyRestaurant(userId) {
+    return this.restaurantModel.findOne({ user: userId });
+  }
 }
