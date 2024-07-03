@@ -11,7 +11,7 @@ import { useFormContext } from "react-hook-form";
 
 export default function ImageSection() {
   const { control, watch } = useFormContext();
-  const imageFile = watch("imgUrl");
+  const imgUrl = watch("imgUrl");
   return (
     <div className=" space-y-2">
       <div>
@@ -19,10 +19,10 @@ export default function ImageSection() {
         <FormDescription>upload an image of your restaurant</FormDescription>
       </div>
       <div className=" flex flex-col gap-8 md:w-[50%]">
-        {imageFile?.length && (
+        {imgUrl && (
           <AspectRatio ratio={16 / 9}>
             <img
-              src={imageFile[0]}
+              src={imgUrl}
               alt="restaurant"
               className=" rounded-md object-cover w-full h-full"
             />

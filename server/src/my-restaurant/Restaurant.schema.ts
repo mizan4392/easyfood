@@ -38,8 +38,8 @@ export class Restaurant extends Document {
   @Prop({ type: [MenuItemSchema], default: [], required: true })
   menuItems: MenuItem[];
 
-  @Prop({ type: [String], required: true })
-  imgUrl: string[];
+  @Prop({ type: String, required: true })
+  imgUrl: string;
 
   @Prop({ type: Date, required: true })
   lastUpdated: string;

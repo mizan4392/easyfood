@@ -10,7 +10,7 @@ export class MyRestaurantService {
     @InjectModel(Restaurant.name) private restaurantModel: Model<Restaurant>,
     private readonly fileUploadService: FileUploadService,
   ) {}
-  async createMyRestaurant(data, userId, filepaths: string[]) {
+  async createMyRestaurant(data, userId, filepath: string) {
     const existingRestaurant = await this.restaurantModel.findOne({
       user: userId,
     });
@@ -21,18 +21,47 @@ export class MyRestaurantService {
         HttpStatus.CONFLICT,
       );
     }
-    const fileUploadResult =
-      await this.fileUploadService.uploadImages(filepaths);
+    const fileUploadResult = await this.fileUploadService.uploadImage(filepath);
 
     const restaurant = new this.restaurantModel(data);
     restaurant.user = userId;
-    restaurant.imgUrl = fileUploadResult.map((result) => result.url);
+    restaurant.imgUrl = fileUploadResult.url;
     restaurant.lastUpdated = new Date().toString();
-    await restaurant.save();
-    return 'This action adds a new restaurant';
+    return restaurant.save();
   }
 
   getMyRestaurant(userId) {
     return this.restaurantModel.findOne({ user: userId });
+  }
+  async updateMyRestaurant(data, userId, filepath: string) {
+    const existingRestaurant = await this.restaurantModel.findOne({
+      user: userId,
+    });
+    if (!existingRestaurant) {
+      throw new HttpException('Restaurant not found', HttpStatus.NOT_FOUND);
+    }
+
+    existingRestaurant.name = data.name;
+    existingRestaurant.city = data.city;
+    existingRestaurant.country = data.country;
+    existingRestaurant.deliveryPrice = data.deliveryPrice;
+    existingRestaurant.estimatedDeliveryTime = data.estimatedDeliveryTime;
+    existingRestaurant.cuisines = data.cuisines;
+    existingRestaurant.menuItems = data.menuItems;
+    existingRestaurant.lastUpdated = new Date().toString();
+
+    if (filepath) {
+      const fileUploadResult =
+        await this.fileUploadService.uploadImage(filepath);
+      existingRestaurant.imgUrl = fileUploadResult.url;
+    }
+
+    const updatedRestaurant = await this.restaurantModel.findOneAndUpdate(
+      { user: userId },
+      {
+        ...existingRestaurant,
+      },
+    );
+    return updatedRestaurant;
   }
 }
