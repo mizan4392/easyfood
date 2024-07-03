@@ -13,7 +13,6 @@ export class FileUploadService {
   }
 
   async uploadImages(imgPaths: string[]): Promise<any> {
-    console.log(imgPaths);
     try {
       const uploadPromises = imgPaths.map((path) => {
         const fileBuffer = readFileSync(path);
@@ -34,6 +33,28 @@ export class FileUploadService {
       return uploadResults;
     } catch (error) {
       console.log(error);
+      throw new HttpException(
+        'Error uploading images to Cloudinary',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async uploadImage(imgPath: string): Promise<any> {
+    try {
+      const fileBuffer = readFileSync(imgPath);
+      const uploadedFile = await new Promise((resolve, reject) => {
+        v2.uploader
+          .upload_stream((error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          })
+          .end(fileBuffer);
+      });
+
+      fs.unlinkSync(imgPath);
+      return uploadedFile;
+    } catch (error) {
       throw new HttpException(
         'Error uploading images to Cloudinary',
         HttpStatus.INTERNAL_SERVER_ERROR,

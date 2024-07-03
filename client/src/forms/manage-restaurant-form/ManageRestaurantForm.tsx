@@ -18,37 +18,43 @@ type Props = {
   restaurant?: Restaurant;
 };
 
-const RestaurantFormSchema = z.object({
-  name: z.string({
-    required_error: "Restaurant name is required",
-  }),
+const RestaurantFormSchema = z
+  .object({
+    name: z.string({
+      required_error: "Restaurant name is required",
+    }),
 
-  city: z.string({
-    required_error: "City is required",
-  }),
-  country: z.string({
-    required_error: "Country name is required",
-  }),
-  deliveryPrice: z.coerce.number({
-    required_error: "Delivery price is required",
-    invalid_type_error: "Delivery price must be a number",
-  }),
+    city: z.string({
+      required_error: "City is required",
+    }),
+    country: z.string({
+      required_error: "Country name is required",
+    }),
+    deliveryPrice: z.coerce.number({
+      required_error: "Delivery price is required",
+      invalid_type_error: "Delivery price must be a number",
+    }),
 
-  estimatedDeliveryTime: z.coerce.number({
-    required_error: "Estimated delivery time is required",
-    invalid_type_error: "Estimated delivery time must be a number",
-  }),
-  cuisines: z.array(z.string({})).nonempty({
-    message: "At least one cuisine is required",
-  }),
-  menuItems: z.array(
-    z.object({
-      name: z.string().min(1, "Name is required"),
-      price: z.coerce.number().min(1, "Price is required"),
-    })
-  ),
-  imageFile: z.instanceof(File, { message: "Image is required" }),
-});
+    estimatedDeliveryTime: z.coerce.number({
+      required_error: "Estimated delivery time is required",
+      invalid_type_error: "Estimated delivery time must be a number",
+    }),
+    cuisines: z.array(z.string({})).nonempty({
+      message: "At least one cuisine is required",
+    }),
+    menuItems: z.array(
+      z.object({
+        name: z.string().min(1, "Name is required"),
+        price: z.coerce.number().min(1, "Price is required"),
+      })
+    ),
+    imgUrl: z.string().optional(),
+    imageFile: z.instanceof(File, { message: "Image is required" }).optional(),
+  })
+  .refine((data) => data.imageFile || data.imgUrl, {
+    message: "Image Url or Image File must be provided",
+    path: ["imageFile"],
+  });
 
 type RestaurantFormData = z.infer<typeof RestaurantFormSchema>;
 
@@ -122,7 +128,7 @@ export default function ManageRestaurantForm({
     });
 
     if (formDataJson.imageFile) {
-      formData.append(`images`, formDataJson.imageFile);
+      formData.append(`image`, formDataJson.imageFile);
     }
 
     onSave(formData);
