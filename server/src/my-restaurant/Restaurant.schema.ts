@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { User } from '../user/user.schema';
+import { User } from 'src/user/User.schema';
 
 @Schema()
 export class MenuItem {
