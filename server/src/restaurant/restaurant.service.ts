@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Restaurant } from 'src/my-restaurant/Restaurant.schema';
@@ -19,10 +19,14 @@ export class RestaurantService {
     dbQuery['city'] = new RegExp(city, 'i');
     const cityCount = await this.restaurantModel.countDocuments(dbQuery);
     if (cityCount === 0) {
-      throw new HttpException(
-        `No restaurants found in ${city}`,
-        HttpStatus.NOT_FOUND,
-      );
+      return {
+        data: [],
+        pagination: {
+          total: 0,
+          page: 1,
+          pages: 1,
+        },
+      };
     }
     if (selectedCuisines?.length) {
       const cuisinesArray = selectedCuisines.split(',').map((cuisine) => {
@@ -46,9 +50,13 @@ export class RestaurantService {
     const pageSize = 10;
     const skip = (page - 1) * pageSize;
 
-    const restaurants = await this.restaurantModel
-      .find(dbQuery)
-      .sort({ [sortOption]: 1 })
+    const restaurantsQuery = this.restaurantModel.find(dbQuery);
+
+    if (sortOption?.length) {
+      restaurantsQuery.sort({ [sortOption]: 1 });
+    }
+
+    const restaurants = await restaurantsQuery
       .skip(skip)
       .limit(pageSize)
       .lean();
