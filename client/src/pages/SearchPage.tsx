@@ -1,4 +1,5 @@
 import { useSearchRestaurants } from "@/apis/RestaurantApi";
+import PaginationSelector from "@/components/PaginationSelector";
 import SearchBar, { SearchForm } from "@/components/SearchBar";
 import SearchRestaurantInfo from "@/components/SearchRestaurantInfo";
 import SearchResultCard from "@/components/SearchResultCard";
@@ -7,11 +8,13 @@ import { useParams } from "react-router-dom";
 
 export type SearchState = {
   searchQuery: string;
+  page: number;
 };
 export default function SearchPage() {
   const { city } = useParams<{ city: string }>();
   const [searchState, setSearchState] = useState<SearchState>({
     searchQuery: "",
+    page: 1,
   });
 
   const { restaurants, isLoading } = useSearchRestaurants(searchState, city);
@@ -20,12 +23,21 @@ export default function SearchPage() {
     setSearchState((prevState) => ({
       ...prevState,
       searchQuery: searchFormData.searchQuery,
+      page: 1,
     }));
   };
   const onSearchReset = () => {
     setSearchState((prevState) => ({
       ...prevState,
       searchQuery: "",
+      page: 1,
+    }));
+  };
+
+  const setPage = (page: number) => {
+    setSearchState((prevState) => ({
+      ...prevState,
+      page,
     }));
   };
   if (isLoading) {
@@ -52,6 +64,11 @@ export default function SearchPage() {
         {restaurants.data.map((restaurant) => (
           <SearchResultCard key={restaurant._id} restaurant={restaurant} />
         ))}
+        <PaginationSelector
+          page={restaurants.pagination.page}
+          pages={restaurants.pagination.pages}
+          onPageChange={setPage}
+        />
       </div>
     </div>
   );
