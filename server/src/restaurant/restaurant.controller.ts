@@ -11,9 +11,16 @@ import { RestaurantService } from './restaurant.service';
 export class RestaurantController {
   constructor(private readonly restaurantService: RestaurantService) {}
 
+  @Get(':restaurantId')
+  getRestaurantById(@Param('restaurantId') restaurantId: string) {
+    if (!restaurantId?.length) {
+      throw new BadRequestException('restaurantId is required');
+    }
+    return this.restaurantService.getRestaurantById(restaurantId);
+  }
+
   @Get('search/:city')
   async searchRestaurant(@Param('city') city: string, @Query() query: string) {
-    console.log(city, query);
     if (!city?.length) {
       throw new BadRequestException('City is required');
     }
