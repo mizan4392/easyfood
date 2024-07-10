@@ -8,6 +8,10 @@ export class RestaurantService {
   constructor(
     @InjectModel(Restaurant.name) private restaurantModel: Model<Restaurant>,
   ) {}
+
+  getRestaurantById(restaurantId: string) {
+    return this.restaurantModel.findById(restaurantId).lean();
+  }
   async searchRestaurant(city: string, query?: any) {
     const searchQuery = (query.searchQuery as string) || '';
     const selectedCuisines = (query.selectedCuisines as string) || '';
