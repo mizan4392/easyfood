@@ -5,6 +5,7 @@ import OrderSummery from "@/components/OrderSummery";
 import RestaurantInfo from "@/components/RestaurantInfo";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardFooter } from "@/components/ui/card";
+import { UserSchema } from "@/forms/UserProfileForm";
 import { MenuItem } from "@/types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -58,6 +59,9 @@ export default function RestaurantDetailPage() {
       return updatedCartItems;
     });
   };
+  const onCheckout = (userFormData: UserSchema) => {
+    console.log("User form data", userFormData);
+  };
   if (isLoading || !restaurant) {
     return <div>Loading...</div>;
   }
@@ -89,7 +93,10 @@ export default function RestaurantDetailPage() {
               removeFromCart={removeItemFromCart}
             />
             <CardFooter>
-              <CheckoutButton />
+              <CheckoutButton
+                isDisabled={cartItems.length === 0}
+                onCheckout={onCheckout}
+              />
             </CardFooter>
           </Card>
         </div>

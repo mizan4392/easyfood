@@ -23,23 +23,31 @@ const formSchema = z.object({
   city: z.string().min(1, "City is required"),
   country: z.string().min(1, "Country is required"),
 });
-type UserSchema = z.infer<typeof formSchema>;
+export type UserSchema = z.infer<typeof formSchema>;
 
 type Props = {
-  currentUser:User
+  currentUser: User;
   onSave: (userProfileData: UserSchema) => void;
   isLoading: boolean;
+  buttonText?: string;
+  title?: string;
 };
 
-export default function UserProfileForm({ onSave, isLoading,currentUser }: Props) {
+export default function UserProfileForm({
+  onSave,
+  isLoading,
+  currentUser,
+  buttonText = "Submit",
+  title = "User Profile",
+}: Props) {
   const form = useForm<UserSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues:currentUser
+    defaultValues: currentUser,
   });
 
-  useEffect(()=>{
-    form.reset(currentUser)
-  },[currentUser,form])
+  useEffect(() => {
+    form.reset(currentUser);
+  }, [currentUser, form]);
 
   return (
     <Form {...form}>
@@ -48,7 +56,7 @@ export default function UserProfileForm({ onSave, isLoading,currentUser }: Props
         className=" space-x-4 bg-gray-50 rounded-lg md:p-10"
       >
         <div>
-          <h2 className="text-2xl font-bold">User Profile Form</h2>
+          <h2 className="text-2xl font-bold">{title}</h2>
           <FormDescription>
             View and update your user profile information here
           </FormDescription>
@@ -72,9 +80,9 @@ export default function UserProfileForm({ onSave, isLoading,currentUser }: Props
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input {...field}  className="bg-white " />
+                <Input {...field} className="bg-white " />
               </FormControl>
-              <FormMessage/>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -87,9 +95,9 @@ export default function UserProfileForm({ onSave, isLoading,currentUser }: Props
               <FormItem className="flex-1">
                 <FormLabel>Address Line one</FormLabel>
                 <FormControl>
-                  <Input {...field}  className="bg-white " />
+                  <Input {...field} className="bg-white " />
                 </FormControl>
-                <FormMessage/>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -100,9 +108,9 @@ export default function UserProfileForm({ onSave, isLoading,currentUser }: Props
               <FormItem>
                 <FormLabel>City</FormLabel>
                 <FormControl>
-                  <Input {...field}  className="bg-white " />
+                  <Input {...field} className="bg-white " />
                 </FormControl>
-                <FormMessage/>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -113,19 +121,22 @@ export default function UserProfileForm({ onSave, isLoading,currentUser }: Props
               <FormItem>
                 <FormLabel>Country</FormLabel>
                 <FormControl>
-                  <Input {...field}  className="bg-white " />
+                  <Input {...field} className="bg-white " />
                 </FormControl>
-                <FormMessage/>
+                <FormMessage />
               </FormItem>
             )}
           />
         </div>
         <div className="mt-5">
-        {
-            isLoading ? <LoadingButton/>:<Button type="submit" className=" bg-orange-500">Submit</Button>
-        }
+          {isLoading ? (
+            <LoadingButton />
+          ) : (
+            <Button type="submit" className=" bg-orange-500">
+              {buttonText}
+            </Button>
+          )}
         </div>
-        
       </form>
     </Form>
   );
