@@ -1,9 +1,10 @@
 import { useGetRestaurantById } from "@/apis/RestaurantApi";
+import CheckoutButton from "@/components/CheckoutButton";
 import MenuItemComponent from "@/components/MenuItemComponent";
 import OrderSummery from "@/components/OrderSummery";
 import RestaurantInfo from "@/components/RestaurantInfo";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Card } from "@/components/ui/card";
+import { Card, CardFooter } from "@/components/ui/card";
 import { MenuItem } from "@/types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -19,7 +20,10 @@ export default function RestaurantDetailPage() {
   const { restaurantId } = useParams<{ restaurantId: string }>();
   const { restaurant, isLoading } = useGetRestaurantById(restaurantId);
 
-  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+  const [cartItems, setCartItems] = useState<CartItemType[]>(() => {
+    const storedCartItems = sessionStorage.getItem(`cartItems-${restaurantId}`);
+    return storedCartItems ? JSON.parse(storedCartItems) : [];
+  });
 
   const addToCart = (menuItem: MenuItem) => {
     setCartItems((prev) => {
@@ -37,13 +41,20 @@ export default function RestaurantDetailPage() {
       } else {
         updatedCartItems = [...prev, { ...menuItem, quantity: 1 }];
       }
-
+      sessionStorage.setItem(
+        `cartItems-${restaurantId}`,
+        JSON.stringify(updatedCartItems)
+      );
       return updatedCartItems;
     });
   };
   const removeItemFromCart = (cartItem: CartItemType) => {
     setCartItems((prev) => {
       const updatedCartItems = prev.filter((item) => item._id !== cartItem._id);
+      sessionStorage.setItem(
+        `cartItems-${restaurantId}`,
+        JSON.stringify(updatedCartItems)
+      );
       return updatedCartItems;
     });
   };
@@ -77,6 +88,9 @@ export default function RestaurantDetailPage() {
               cartItems={cartItems}
               removeFromCart={removeItemFromCart}
             />
+            <CardFooter>
+              <CheckoutButton />
+            </CardFooter>
           </Card>
         </div>
       </div>
