@@ -1,3 +1,4 @@
+import { useCreateCheckoutSession } from "@/apis/orderApi";
 import { useGetRestaurantById } from "@/apis/RestaurantApi";
 import CheckoutButton from "@/components/CheckoutButton";
 import MenuItemComponent from "@/components/MenuItemComponent";
@@ -6,7 +7,8 @@ import RestaurantInfo from "@/components/RestaurantInfo";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardFooter } from "@/components/ui/card";
 import { UserSchema } from "@/forms/UserProfileForm";
-import { MenuItem } from "@/types";
+import { CheckoutSessionRequest, MenuItem } from "@/types";
+
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -20,7 +22,8 @@ export type CartItemType = {
 export default function RestaurantDetailPage() {
   const { restaurantId } = useParams<{ restaurantId: string }>();
   const { restaurant, isLoading } = useGetRestaurantById(restaurantId);
-
+  const { createCheckoutSession, isLoading: isCheckoutLoading } =
+    useCreateCheckoutSession();
   const [cartItems, setCartItems] = useState<CartItemType[]>(() => {
     const storedCartItems = sessionStorage.getItem(`cartItems-${restaurantId}`);
     return storedCartItems ? JSON.parse(storedCartItems) : [];
@@ -59,8 +62,30 @@ export default function RestaurantDetailPage() {
       return updatedCartItems;
     });
   };
-  const onCheckout = (userFormData: UserSchema) => {
+  const onCheckout = async (userFormData: UserSchema) => {
     console.log("User form data", userFormData);
+    if (!restaurant) {
+      return;
+    }
+    const checkoutData: CheckoutSessionRequest = {
+      cartItems: cartItems?.map((item) => {
+        return {
+          menuItemId: item._id,
+          name: item.name,
+          quantity: item.quantity,
+        };
+      }),
+      restaurantId: restaurantId,
+      deliveryDetails: {
+        name: userFormData.name,
+        email: userFormData.email as string,
+        addressLine1: userFormData.addressLine1,
+        city: userFormData.city,
+        country: userFormData.country,
+      },
+    };
+    const data = await createCheckoutSession(checkoutData);
+    window.location.href = data?.url;
   };
   if (isLoading || !restaurant) {
     return <div>Loading...</div>;
@@ -96,6 +121,7 @@ export default function RestaurantDetailPage() {
               <CheckoutButton
                 isDisabled={cartItems.length === 0}
                 onCheckout={onCheckout}
+                isLoading={isCheckoutLoading}
               />
             </CardFooter>
           </Card>

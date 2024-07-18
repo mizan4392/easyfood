@@ -34,3 +34,19 @@ export type RestaurantSearchResponse = {
     total: number;
   };
 };
+
+export type CheckoutSessionRequest = {
+  cartItems: {
+    menuItemId: string;
+    name: string;
+    quantity: number;
+  }[];
+  deliveryDetails: {
+    email?: string;
+    name: string;
+    addressLine1: string;
+    city: string;
+    country?: string;
+  };
+  restaurantId?: string;
+};

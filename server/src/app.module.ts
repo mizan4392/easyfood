@@ -13,6 +13,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { storage } from './util/multer';
 import { AuthModule } from './authorization/auth.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { RestaurantModule } from './restaurant/restaurant.module';
     FileUploadModule,
     MyRestaurantModule,
     RestaurantModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
