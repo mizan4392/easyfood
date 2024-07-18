@@ -6,6 +6,7 @@ import { Restaurant } from 'src/my-restaurant/Restaurant.schema';
 import { StripeService } from './stripe.service';
 import { InjectModel } from '@nestjs/mongoose';
 import Stripe from 'stripe';
+import { Order } from './order.schema';
 
 export type CheckoutSessionRequest = {
   cartItems: {
@@ -26,8 +27,9 @@ export class OrderService {
   constructor(
     private readonly stripeService: StripeService,
     @InjectModel(Restaurant.name) private restaurantModel: Model<Restaurant>,
+    @InjectModel(Order.name) private orderModel: Model<Order>,
   ) {}
-  async createCheckoutSession(data: CheckoutSessionRequest) {
+  async createCheckoutSession(data: CheckoutSessionRequest, userId: string) {
     // Get the restaurant
     const restaurant = await this.restaurantModel.findById(data.restaurantId);
 
@@ -36,18 +38,30 @@ export class OrderService {
       throw new Error('Restaurant not found');
     }
 
+    // Create order in mongoDB
+    const orderData = {
+      restaurant: data.restaurantId,
+      user: userId,
+      status: 'place',
+      deliveryDetails: data.deliveryDetails,
+      cartItem: data.cartItems,
+      createdAt: new Date().toISOString(),
+    };
+
+    const newOrder = new this.orderModel(orderData);
+
     const lineItems = createLineItems(data, restaurant.menuItems);
 
     const session = await this.stripeService.createCheckoutSession(
       lineItems,
-      'TEST_ORDER_ID',
+      newOrder._id.toString(),
       restaurant.deliveryPrice,
       data.restaurantId,
     );
     if (!session?.url) {
       throw new Error('Failed to create session');
     }
-
+    newOrder.save();
     return { url: session.url };
   }
 }

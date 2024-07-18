@@ -15,7 +15,6 @@ export class StripeService {
     deliveryPrice: number,
     restaurantId: string,
   ) {
-    console.log(this.FRONTEND_URL);
     // Logic to create a checkout session
     const session = await this.stripe.checkout.sessions.create({
       line_items: lineItems,
@@ -39,7 +38,7 @@ export class StripeService {
       success_url: `${this.FRONTEND_URL}/order-status?success=true`,
       cancel_url: `${this.FRONTEND_URL}/detail/${restaurantId}?canceled=true`,
     });
-    console.log(session);
+
     return session;
   }
 }

@@ -8,6 +8,7 @@ import {
   RestaurantSchema,
 } from 'src/my-restaurant/Restaurant.schema';
 import { StripeService } from './stripe.service';
+import { Order, OrderSchema } from './order.schema';
 
 @Module({
   imports: [
@@ -19,6 +20,10 @@ import { StripeService } from './stripe.service';
       {
         name: Restaurant.name,
         schema: RestaurantSchema,
+      },
+      {
+        name: Order.name,
+        schema: OrderSchema,
       },
     ]),
   ],
