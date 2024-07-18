@@ -10,10 +10,12 @@ import { useGetMyUser } from "@/apis/users";
 export type CheckoutButtonProps = {
   onCheckout: (userProfileData: UserSchema) => void;
   isDisabled: boolean;
+  isLoading: boolean;
 };
 export default function CheckoutButton({
   onCheckout,
   isDisabled,
+  isLoading,
 }: CheckoutButtonProps) {
   const {
     isAuthenticated,
@@ -34,7 +36,7 @@ export default function CheckoutButton({
       </Button>
     );
   }
-  if (authLoading || !currentUser) {
+  if (authLoading || !currentUser || isLoading) {
     return <LoadingButton />;
   }
 
