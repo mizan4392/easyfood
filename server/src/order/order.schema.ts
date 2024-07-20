@@ -1,6 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { InferSchemaType } from 'mongoose';
 
+export type OrderStatusType =
+  | 'place'
+  | 'paid'
+  | 'inProgress'
+  | 'outForDelivery'
+  | 'delivered';
 // Define the DeliveryDetails schema
 const DeliveryDetailsSchema = new mongoose.Schema({
   email: { type: String, required: true },
