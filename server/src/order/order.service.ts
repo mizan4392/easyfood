@@ -6,7 +6,7 @@ import { Restaurant } from 'src/my-restaurant/Restaurant.schema';
 import { StripeService } from './stripe.service';
 import { InjectModel } from '@nestjs/mongoose';
 import Stripe from 'stripe';
-import { Order } from './order.schema';
+import { Order, OrderStatusType } from './order.schema';
 
 export type CheckoutSessionRequest = {
   cartItems: {
@@ -63,6 +63,22 @@ export class OrderService {
     }
     newOrder.save();
     return { url: session.url };
+  }
+
+  async updateOrderStatus(
+    orderId: string,
+    status: OrderStatusType,
+    totalAmount: number,
+  ) {
+    const order = await this.orderModel.findById(orderId);
+    if (!order) {
+      throw new Error('Order not found');
+    }
+
+    order.totalAmount = totalAmount;
+    order.status = status;
+
+    return await order.save();
   }
 }
 

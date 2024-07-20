@@ -6,7 +6,9 @@ export class StripeService {
   private stripe: Stripe;
   private FRONTEND_URL: string;
   constructor() {
-    this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2024-06-20',
+    });
     this.FRONTEND_URL = process.env.FRONTEND_URL;
   }
   async createCheckoutSession(
