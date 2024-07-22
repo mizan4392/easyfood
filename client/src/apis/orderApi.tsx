@@ -1,8 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { API_BASE_URL, postHeader } from "./http";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
-import { CheckoutSessionRequest } from "@/types";
+import { CheckoutSessionRequest, Order } from "@/types";
 
 export const useCreateCheckoutSession = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -33,4 +33,30 @@ export const useCreateCheckoutSession = () => {
     reset();
   }
   return { createCheckoutSession, isLoading };
+};
+
+export const useGetMyOrders = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  const getMyOrdersRequest = async (): Promise<Order[]> => {
+    const token = await getAccessTokenSilently();
+    const response = await fetch(`${API_BASE_URL}/order/my-orders`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to get orders");
+    }
+    return response.json();
+  };
+
+  const {
+    data: orders,
+    isLoading,
+    error,
+  } = useQuery("myOrders", getMyOrdersRequest);
+  if (error) {
+    toast.error(error.toString());
+  }
+  return { orders, isLoading };
 };

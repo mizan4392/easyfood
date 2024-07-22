@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   Post,
   Request,
   UseGuards,
@@ -16,6 +17,12 @@ import Stripe from 'stripe';
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
+
+  @Get('my-orders')
+  @UseGuards(AuthorizationGuard)
+  async getMyOrders(@CurrentUser() user: AuthUser) {
+    return this.orderService.getMyOrders(user.userId);
+  }
 
   @Post('checkout/create-checkout-session')
   @UseGuards(AuthorizationGuard)

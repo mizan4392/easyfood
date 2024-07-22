@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { InferSchemaType } from 'mongoose';
 
 export type OrderStatusType =
-  | 'place'
+  | 'placed'
   | 'paid'
   | 'inProgress'
   | 'outForDelivery'
@@ -47,7 +47,7 @@ export class Order {
   deliveryDetails: DeliveryDetailsType;
 
   @Prop({ type: [CartItemSchema], default: [], required: true })
-  cartItem: CartItemType[];
+  cartItems: CartItemType[];
 
   @Prop({ type: Number, required: false })
   totalAmount?: number;
