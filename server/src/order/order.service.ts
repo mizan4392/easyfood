@@ -29,6 +29,14 @@ export class OrderService {
     @InjectModel(Restaurant.name) private restaurantModel: Model<Restaurant>,
     @InjectModel(Order.name) private orderModel: Model<Order>,
   ) {}
+
+  async getMyOrders(userId: string) {
+    return await this.orderModel
+      .find({ user: userId })
+      .populate('restaurant')
+      .populate('user');
+  }
+
   async createCheckoutSession(data: CheckoutSessionRequest, userId: string) {
     // Get the restaurant
     const restaurant = await this.restaurantModel.findById(data.restaurantId);
