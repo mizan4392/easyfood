@@ -3,11 +3,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Restaurant } from './Restaurant.schema';
 import { Model } from 'mongoose';
 import { FileUploadService } from 'src/file-upload/file-upload.service';
+import { Order } from 'src/order/order.schema';
 
 @Injectable()
 export class MyRestaurantService {
   constructor(
     @InjectModel(Restaurant.name) private restaurantModel: Model<Restaurant>,
+    @InjectModel(Order.name) private orderSchemaModel: Model<Order>,
     private readonly fileUploadService: FileUploadService,
   ) {}
   async createMyRestaurant(data, userId, filepath: string) {
@@ -30,7 +32,7 @@ export class MyRestaurantService {
     return restaurant.save();
   }
 
-  getMyRestaurant(userId) {
+  async getMyRestaurant(userId) {
     return this.restaurantModel.findOne({ user: userId });
   }
   async updateMyRestaurant(data, userId, filepath: string) {
@@ -63,5 +65,36 @@ export class MyRestaurantService {
       },
     );
     return updatedRestaurant;
+  }
+
+  async getMyRestaurantOrders(userId) {
+    const existingRestaurant = await this.restaurantModel.findOne({
+      user: userId,
+    });
+    if (!existingRestaurant) {
+      throw new HttpException('Restaurant not found', HttpStatus.NOT_FOUND);
+    }
+    return this.orderSchemaModel
+      .find({ restaurant: existingRestaurant._id })
+      .populate('user')
+      .populate('restaurant');
+  }
+
+  async updateOrderStatus(orderId, status, userId) {
+    const existingRestaurant = await this.restaurantModel.findOne({
+      user: userId,
+    });
+    if (!existingRestaurant) {
+      throw new HttpException('Restaurant not found', HttpStatus.NOT_FOUND);
+    }
+    const order = await this.orderSchemaModel.findOne({
+      _id: orderId,
+      restaurant: existingRestaurant._id,
+    });
+    if (!order) {
+      throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
+    }
+    order.status = status;
+    return order.save();
   }
 }

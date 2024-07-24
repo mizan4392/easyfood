@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Patch,
   Post,
   UploadedFile,
@@ -52,5 +53,25 @@ export class MyRestaurantController {
       user.userId,
       file?.path,
     );
+  }
+
+  @Patch('/order/:orderId/status')
+  @UseGuards(AuthorizationGuard)
+  updateOrderStatus(
+    @Body('status') status: string,
+    @CurrentUser() user: AuthUser,
+    @Param('orderId') orderId: string,
+  ) {
+    return this.myRestaurantService.updateOrderStatus(
+      orderId,
+      status,
+      user.userId,
+    );
+  }
+
+  @Get('orders')
+  @UseGuards(AuthorizationGuard)
+  getMyRestaurantOrders(@CurrentUser() user: AuthUser) {
+    return this.myRestaurantService.getMyRestaurantOrders(user.userId);
   }
 }

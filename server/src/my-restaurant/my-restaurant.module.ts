@@ -13,6 +13,7 @@ import {
   RestaurantSchema,
 } from './Restaurant.schema';
 import { User, UserSchema } from 'src/user/User.schema';
+import { Order, OrderSchema } from 'src/order/order.schema';
 
 @Module({
   imports: [
@@ -28,6 +29,10 @@ import { User, UserSchema } from 'src/user/User.schema';
       {
         name: User.name,
         schema: UserSchema,
+      },
+      {
+        name: Order.name,
+        schema: OrderSchema,
       },
     ]),
     MulterModule.register({
