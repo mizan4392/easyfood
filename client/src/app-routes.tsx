@@ -39,7 +39,7 @@ function AppRoutes() {
 
       <Route element={<ProtectedRoute />}>
         <Route
-          path="/order-status"
+          path={`/order-status`}
           element={
             <Layout>
               <OrderStatusPage />
