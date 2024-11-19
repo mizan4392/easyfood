@@ -15,6 +15,7 @@ import { AuthModule } from './authorization/auth.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { OrderModule } from './order/order.module';
 import { RawBodyMiddleware } from './raw-body-json';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { RawBodyMiddleware } from './raw-body-json';
     MyRestaurantModule,
     RestaurantModule,
     OrderModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

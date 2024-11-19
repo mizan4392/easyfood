@@ -50,4 +50,13 @@ export class UserService {
       throw new InternalServerErrorException('Something went wrong');
     }
   }
+
+  async getAnyUser() {
+    try {
+      const user = await this.userModel.findOne({});
+      return user;
+    } catch (e) {
+      throw new InternalServerErrorException('Something went wrong');
+    }
+  }
 }
