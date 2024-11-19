@@ -9,9 +9,9 @@ export class AppService {
     return 'Hello World!';
   }
 
-  @Cron('1 * * * * *')
+  @Cron('0 0 */18 * * *')
   async keepDbLive() {
-    const user = await this.userService.getAnyUser();
-    console.log(user);
+    await this.userService.getAnyUser();
+    console.log(' Database hit on ->', new Date().toDateString());
   }
 }

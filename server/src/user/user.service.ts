@@ -56,7 +56,10 @@ export class UserService {
       const user = await this.userModel.findOne({});
       return user;
     } catch (e) {
-      throw new InternalServerErrorException('Something went wrong');
+      throw new InternalServerErrorException(
+        'Failed to get db connection->',
+        new Date().toDateString(),
+      );
     }
   }
 }
