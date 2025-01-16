@@ -24,12 +24,14 @@ export class AuthorizationGuard implements CanActivate {
 
     try {
       const authorization = request.headers.authorization;
+
       if (authorization) {
         const token = authorization.split(' ')[1];
         const decode = jwt.decode(token);
         const auth0Id = decode.sub;
 
         const user = await this.userModel.findOne({ auth0Id });
+
         if (!user) {
           throw new UnauthorizedException('Requires authentication');
         }

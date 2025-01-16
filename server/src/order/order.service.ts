@@ -38,6 +38,7 @@ export class OrderService {
   }
 
   async createCheckoutSession(data: CheckoutSessionRequest, userId: string) {
+    console.log('data', data);
     // Get the restaurant
     const restaurant = await this.restaurantModel.findById(data.restaurantId);
 
@@ -52,7 +53,7 @@ export class OrderService {
       user: userId,
       status: 'place',
       deliveryDetails: data.deliveryDetails,
-      cartItem: data.cartItems,
+      cartItems: data.cartItems,
       createdAt: new Date().toISOString(),
     };
 
@@ -85,7 +86,7 @@ export class OrderService {
 
     order.totalAmount = totalAmount;
     order.status = status;
-
+    console.log('order', order);
     return await order.save();
   }
 }

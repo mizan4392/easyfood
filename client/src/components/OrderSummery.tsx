@@ -36,7 +36,7 @@ export default function OrderSummery({
       </CardHeader>
       <CardContent className=" flex flex-col gap-5">
         {cartItems.map((item) => (
-          <div className=" flex justify-between">
+          <div className=" flex justify-between" key={item._id}>
             <span>
               <Badge variant={"outline"} className="mr-2">
                 {item.quantity}

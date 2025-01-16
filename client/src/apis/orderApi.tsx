@@ -27,7 +27,7 @@ export const useCreateCheckoutSession = () => {
     error,
     reset,
   } = useMutation(createCheckoutSessionRequest);
-  console.log(error);
+
   if (error) {
     toast.error(error.toString());
     reset();

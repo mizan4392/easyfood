@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useLocation } from "react-router-dom";
+
 import { Button } from "./ui/button";
 import LoadingButton from "./LoadingButton";
 import { Dialog, DialogContent } from "./ui/dialog";
@@ -23,10 +23,10 @@ export default function CheckoutButton({
     loginWithRedirect,
   } = useAuth0();
   const { currentUser, isLoading: isGetUserLoading } = useGetMyUser();
-  const { pathname } = useLocation();
+
   const onLogin = async () => {
     await loginWithRedirect({
-      appState: { returnTo: pathname },
+      // appState: { returnTo: pathname },
     });
   };
   if (!isAuthenticated) {
@@ -36,6 +36,7 @@ export default function CheckoutButton({
       </Button>
     );
   }
+
   if (authLoading || !currentUser || isLoading) {
     return <LoadingButton />;
   }

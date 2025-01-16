@@ -63,7 +63,6 @@ export default function RestaurantDetailPage() {
     });
   };
   const onCheckout = async (userFormData: UserSchema) => {
-    console.log("User form data", userFormData);
     if (!restaurant) {
       return;
     }
@@ -84,7 +83,9 @@ export default function RestaurantDetailPage() {
         country: userFormData.country,
       },
     };
+
     const data = await createCheckoutSession(checkoutData);
+
     window.location.href = data?.url;
   };
   if (isLoading || !restaurant) {

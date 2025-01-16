@@ -45,7 +45,6 @@ export class Auth0AuthorizationGuard implements CanActivate {
 
       return true;
     } catch (error) {
-      console.log('error', error);
       throw new UnauthorizedException('Requires authentication');
     }
   }

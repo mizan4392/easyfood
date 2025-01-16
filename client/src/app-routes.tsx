@@ -19,7 +19,7 @@ function AppRoutes() {
           </Layout>
         }
       />
-      <Route path="auth-callback" element={<AuthCallBackPage />} />
+      <Route path="/auth-callback" element={<AuthCallBackPage />} />
       <Route
         path="/search/:city"
         element={
