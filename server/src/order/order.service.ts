@@ -84,10 +84,15 @@ export class OrderService {
       throw new Error('Order not found');
     }
 
-    order.totalAmount = totalAmount;
-    order.status = status;
-    console.log('order', order);
-    return await order.save();
+    return this.orderModel.updateOne(
+      { _id: order?._id },
+      {
+        $set: {
+          totalAmount: totalAmount / 100,
+          status: status,
+        },
+      },
+    );
   }
 }
 

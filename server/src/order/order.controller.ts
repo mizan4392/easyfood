@@ -32,14 +32,13 @@ export class OrderController {
   ) {
     return this.orderService.createCheckoutSession(data, user.userId);
   }
-
+  // "start:dev": "concurrently \"nest start --watch\" \"npm run stripe\"",
   @Post('checkout/webhook')
   async stripeWebhook(@Body() data: any, @Request() req: any) {
     let event;
 
     try {
       const sig = req.headers['stripe-signature'];
-
       event = Stripe.webhooks.constructEvent(
         req.rawBody,
         sig,
@@ -50,6 +49,7 @@ export class OrderController {
       throw new BadRequestException(`Webhook Error: ${err.message}`);
     }
     if (event.type === 'checkout.session.completed') {
+      console.log('event', event?.data?.object);
       return this.orderService.updateOrderStatus(
         event.data.object.metadata.orderId,
         'paid',

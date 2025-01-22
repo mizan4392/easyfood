@@ -11,6 +11,7 @@ export default function OrderStatusPage() {
   if (!orders || orders.length === 0) {
     return <div>No orders found</div>;
   }
+  console.log(orders);
   return (
     <div className=" space-y-10">
       {orders.map((order) => (

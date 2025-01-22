@@ -29,6 +29,11 @@ export default function RestaurantDetailPage() {
     return storedCartItems ? JSON.parse(storedCartItems) : [];
   });
 
+  const emptyCartItem = () => {
+    setCartItems([]);
+    sessionStorage.removeItem(`cartItems-${restaurantId}`);
+  };
+
   const addToCart = (menuItem: MenuItem) => {
     setCartItems((prev) => {
       // Check if the item is already in the cart
@@ -85,7 +90,7 @@ export default function RestaurantDetailPage() {
     };
 
     const data = await createCheckoutSession(checkoutData);
-
+    emptyCartItem();
     window.location.href = data?.url;
   };
   if (isLoading || !restaurant) {

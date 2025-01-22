@@ -28,9 +28,7 @@ export default function OrderStatusDetails({ order }: Props) {
       <Separator />
       <div className="flex flex-col">
         <span className=" font-bold">Total</span>
-        <span>
-          $ {order.totalAmount ? (order.totalAmount / 100).toFixed() : 0}
-        </span>
+        <span>$ {order.totalAmount ? order.totalAmount.toFixed() : 0}</span>
       </div>
     </div>
   );
