@@ -9,7 +9,6 @@ export class User {
   auth0Id: string;
   @Prop({
     type: String,
-    unique: true,
   })
   name: string;
   @Prop({
@@ -29,7 +28,6 @@ export class User {
   city: string;
   @Prop({
     type: String,
-    unique: true,
   })
   country: string;
 
