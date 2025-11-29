@@ -23,12 +23,8 @@ services:
       dockerfile: Dockerfile
     container_name: easyfood-client
     ports:
-      - "4001:5173"
+      - "4001:80"
     env_file:
       - ./client/.env
-    volumes:
-      - ./client:/app
-      - /app/node_modules
-    command: npm run dev
     depends_on:
       - easyfood-server
