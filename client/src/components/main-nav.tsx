@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 
 export default function MainNav() {
   const { loginWithRedirect, isAuthenticated } = useAuth0();
+
+  console.log("MainNav - isAuthenticated:", isAuthenticated);
   return (
     <span className="flex">
       {isAuthenticated ? (
