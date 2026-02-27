@@ -3,8 +3,8 @@ import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
  
 export default defineConfig({
-   base: '/easyfood',   
-  plugins: [react()],
+
+     plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -12,6 +12,6 @@ export default defineConfig({
   },
   server:{
     host: true,
-    port: 5173
+    port: 3000
   }
 })
