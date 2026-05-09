@@ -8,6 +8,7 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function HomePage() {
   const navigate = useNavigate();
+
   const { data, isLoading } = useGetRestaurants("1");
   console.log(data);
   const handleSearchSubmit = (searchValues: SearchForm) => {
@@ -15,6 +16,7 @@ export default function HomePage() {
       pathname: `search/${searchValues.searchQuery}`,
     });
   };
+
   return (
     <div className=" flex flex-col gap-12">
       <div className=" md:px-32 bg-white rounded-lg shadow-md py-8 flex flex-col gap-5 text-center -mt-16">
@@ -40,14 +42,6 @@ export default function HomePage() {
               {data?.data?.map((restaurant) => (
                 <RestaurantCard key={restaurant._id} restaurant={restaurant} />
               ))}
-            </div>
-            <div className="flex justify-center mt-12">
-              <button
-                // onClick={handleLoadMore}
-                className="px-7 py-3 rounded-full bg-black text-white font-medium hover:bg-gray-800 transition duration-300 shadow-lg hover:scale-105"
-              >
-                Load More
-              </button>
             </div>
           </div>
         )}
