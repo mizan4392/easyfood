@@ -28,9 +28,9 @@ export type CartItemType = InferSchemaType<typeof CartItemSchema>;
 export class Order {
   @Prop({
     required: true,
-    type: mongoose.Schema.Types.ObjectId,
+    // type: mongoose.Schema.Types.ObjectId,
   })
-  _id: string;
+  _id: mongoose.Types.ObjectId;
 
   @Prop({
     required: true,
