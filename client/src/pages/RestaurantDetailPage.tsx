@@ -21,6 +21,7 @@ export type CartItemType = {
 
 export default function RestaurantDetailPage() {
   const { restaurantId } = useParams<{ restaurantId: string }>();
+
   const { restaurant, isLoading } = useGetRestaurantById(restaurantId);
   const { createCheckoutSession, isLoading: isCheckoutLoading } =
     useCreateCheckoutSession();
@@ -45,14 +46,14 @@ export default function RestaurantDetailPage() {
         updatedCartItems = prev.map((item) =>
           item._id === menuItem._id
             ? { ...exist, quantity: exist.quantity + 1 }
-            : item
+            : item,
         );
       } else {
         updatedCartItems = [...prev, { ...menuItem, quantity: 1 }];
       }
       sessionStorage.setItem(
         `cartItems-${restaurantId}`,
-        JSON.stringify(updatedCartItems)
+        JSON.stringify(updatedCartItems),
       );
       return updatedCartItems;
     });
@@ -62,7 +63,7 @@ export default function RestaurantDetailPage() {
       const updatedCartItems = prev.filter((item) => item._id !== cartItem._id);
       sessionStorage.setItem(
         `cartItems-${restaurantId}`,
-        JSON.stringify(updatedCartItems)
+        JSON.stringify(updatedCartItems),
       );
       return updatedCartItems;
     });

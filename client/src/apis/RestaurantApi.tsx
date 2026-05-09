@@ -17,7 +17,7 @@ export const useGetRestaurantById = (restaurantId?: string) => {
     getRestaurantById,
     {
       enabled: !!restaurantId,
-    }
+    },
   );
 
   return { restaurant, isLoading };
@@ -25,7 +25,7 @@ export const useGetRestaurantById = (restaurantId?: string) => {
 
 export const useSearchRestaurants = (
   searchState?: SearchState,
-  city?: string
+  city?: string,
 ) => {
   const searchRestaurants = async (): Promise<RestaurantSearchResponse> => {
     const params = new URLSearchParams();
@@ -33,11 +33,11 @@ export const useSearchRestaurants = (
     params.set("page", searchState?.page.toString() || "1");
     params.set(
       "selectedCuisines",
-      searchState?.selectedCuisines.join(",") || ""
+      searchState?.selectedCuisines.join(",") || "",
     );
     params.set("sortOption", searchState?.sortOption || "bestMatch");
     const response = await fetch(
-      `${API_BASE_URL}/restaurant/search/${city}?${params.toString()}`
+      `${API_BASE_URL}/restaurant/search/${city}?${params.toString()}`,
     );
     if (!response.ok) {
       throw new Error("Failed to fetch restaurants");
@@ -50,11 +50,32 @@ export const useSearchRestaurants = (
     searchRestaurants,
     {
       enabled: !!city,
-    }
+    },
   );
 
   return {
     restaurants: data,
     isLoading,
   };
+};
+
+export type IRestaurantApi = {
+  data: Restaurant[] | null;
+  page: number;
+};
+
+export const useGetRestaurants = (page: string) => {
+  const getRestaurants = async (): Promise<IRestaurantApi> => {
+    const response = await fetch(`${API_BASE_URL}/restaurant/popular/${page}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch restaurant");
+    }
+    return response.json();
+  };
+
+  const { data: data, isLoading } = useQuery("getRestaurants", getRestaurants, {
+    enabled: !!page,
+  });
+
+  return { data, isLoading };
 };

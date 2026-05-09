@@ -18,6 +18,10 @@ export class RestaurantController {
     }
     return this.restaurantService.getRestaurantById(restaurantId);
   }
+  @Get('popular/:page')
+  getRestaurants(@Param('page') page: string) {
+    return this.restaurantService.getRestaurants(page);
+  }
 
   @Get('search/:city')
   async searchRestaurant(@Param('city') city: string, @Query() query: string) {

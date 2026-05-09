@@ -76,4 +76,20 @@ export class RestaurantService {
       },
     };
   }
+
+  async getRestaurants(page: string) {
+    console.log('page', page);
+    const pageSize = 10;
+    const pageNumber = parseInt(page) || 1;
+    const skip = (pageNumber - 1) * pageSize;
+    const restaurants = await this.restaurantModel
+      .find()
+      .skip(skip)
+      .limit(pageSize)
+      .lean();
+    return {
+      data: restaurants,
+      page: pageNumber,
+    };
+  }
 }
