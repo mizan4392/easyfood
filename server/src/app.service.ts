@@ -12,6 +12,5 @@ export class AppService {
   @Cron('0 0 */18 * * *')
   async keepDbLive() {
     await this.userService.getAnyUser();
-    console.log(' Database hit on ->', new Date().toDateString());
   }
 }

@@ -38,7 +38,6 @@ export class OrderService {
   }
 
   async createCheckoutSession(data: CheckoutSessionRequest, userId: string) {
-    console.log('data', data);
     // Get the restaurant
     const restaurant = await this.restaurantModel.findById(data.restaurantId);
 

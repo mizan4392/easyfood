@@ -32,7 +32,6 @@ export class FileUploadService {
       });
       return uploadResults;
     } catch (error) {
-      console.log(error);
       throw new HttpException(
         'Error uploading images to Cloudinary',
         HttpStatus.INTERNAL_SERVER_ERROR,

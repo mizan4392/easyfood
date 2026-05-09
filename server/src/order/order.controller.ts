@@ -44,12 +44,11 @@ export class OrderController {
         sig,
         process.env.STRIPE_WEBHOOK_SECRET,
       );
-    } catch (err) {
+    } catch (err: any) {
       console.log('STRIPE Error::', err);
       throw new BadRequestException(`Webhook Error: ${err.message}`);
     }
     if (event.type === 'checkout.session.completed') {
-      console.log('event', event?.data?.object);
       return this.orderService.updateOrderStatus(
         event.data.object.metadata.orderId,
         'paid',

@@ -86,7 +86,6 @@ export class Auth0AuthorizationGuard implements CanActivate {
         if (err) {
           reject(new UnauthorizedException(err.message));
         } else {
-          console.log('JWT Auth Guard: Authentication successful');
           resolve(true);
         }
       });

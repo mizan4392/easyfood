@@ -7,10 +7,9 @@ export default function AuthCallBackPage() {
   const navigate = useNavigate();
   const { user } = useAuth0();
   const { createUser } = useCreateMyUser();
-  console.log("AuthCallBackPage rendered with user:", user);
+
   const hasCreateUser = useRef(false);
   useEffect(() => {
-    console.log("Auth Callback User:", user);
     if (user?.sub && user?.email && !hasCreateUser.current) {
       createUser({ auth0Id: user.sub, email: user.email, name: user.name });
       hasCreateUser.current = true;

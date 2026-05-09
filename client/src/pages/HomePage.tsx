@@ -10,7 +10,7 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   const { data, isLoading } = useGetRestaurants("1");
-  console.log(data);
+
   const handleSearchSubmit = (searchValues: SearchForm) => {
     navigate({
       pathname: `search/${searchValues.searchQuery}`,
