@@ -97,4 +97,22 @@ export class MyRestaurantService {
     order.status = status;
     return order.save();
   }
+
+  async createMyFakeRestaurant(data) {
+    const existingRestaurant = await this.restaurantModel.findOne({
+      user: data.user,
+    });
+
+    if (existingRestaurant) {
+      throw new HttpException(
+        'User restaurant already exists',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    const restaurant = new this.restaurantModel(data);
+
+    restaurant.lastUpdated = new Date().toString();
+    return restaurant.save();
+  }
 }

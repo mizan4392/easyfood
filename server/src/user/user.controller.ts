@@ -15,6 +15,11 @@ export class UserController {
     return this.userService.createUser(body);
   }
 
+  @Post('create/fake')
+  createFakeUser(@Body() body: UserDto) {
+    return this.userService.createUser(body);
+  }
+
   @Patch('update')
   @UseGuards(AuthorizationGuard)
   updateUser(@CurrentUser() user: AuthUser, @Body() body: UpdateUserDto) {

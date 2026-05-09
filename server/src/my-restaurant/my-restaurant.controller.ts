@@ -74,4 +74,9 @@ export class MyRestaurantController {
   getMyRestaurantOrders(@CurrentUser() user: AuthUser) {
     return this.myRestaurantService.getMyRestaurantOrders(user.userId);
   }
+
+  @Post('fake')
+  createMyFakeRestaurant(@Body() body: MyRestaurantDto) {
+    return this.myRestaurantService.createMyFakeRestaurant(body);
+  }
 }
