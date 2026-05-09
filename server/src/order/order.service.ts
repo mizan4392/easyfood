@@ -1,7 +1,6 @@
-import { MenuItemType } from './../my-restaurant/Restaurant.schema';
+import { MenuItemType, Restaurant } from './../my-restaurant/Restaurant.schema';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Restaurant } from 'src/my-restaurant/Restaurant.schema';
 
 import { StripeService } from './stripe.service';
 import { InjectModel } from '@nestjs/mongoose';
@@ -56,7 +55,7 @@ export class OrderService {
       createdAt: new Date().toISOString(),
     };
 
-    const newOrder = new this.orderModel(orderData);
+    const newOrder = await new this.orderModel(orderData);
 
     const lineItems = createLineItems(data, restaurant.menuItems);
 

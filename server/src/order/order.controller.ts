@@ -8,11 +8,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CheckoutSessionRequest, OrderService } from './order.service';
-import { AuthorizationGuard } from 'src/authorization/authorization.guard';
-import { CurrentUser } from 'src/decorators/user.decorator';
 
-import { AuthUser } from 'src/user/user.dto';
 import Stripe from 'stripe';
+import { AuthorizationGuard } from '../authorization/authorization.guard';
+import { AuthUser } from '../user/user.dto';
+import { CurrentUser } from '../decorators/user.decorator';
 
 @Controller('order')
 export class OrderController {

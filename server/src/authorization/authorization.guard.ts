@@ -9,7 +9,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
-import { User } from 'src/user/User.schema';
+import { User } from '../user/User.schema';
 
 const jwt = require('jsonwebtoken');
 
