@@ -55,8 +55,9 @@ export class OrderService {
       createdAt: new Date().toISOString(),
     };
 
-    const newOrder = await new this.orderModel(orderData);
+    const newOrder = await this.orderModel.create(orderData);
     console.log('New Order::', newOrder);
+
     const lineItems = createLineItems(data, restaurant.menuItems);
 
     const session = await this.stripeService.createCheckoutSession(
@@ -68,7 +69,7 @@ export class OrderService {
     if (!session?.url) {
       throw new Error('Failed to create session');
     }
-    newOrder.save();
+
     return { url: session.url };
   }
 
