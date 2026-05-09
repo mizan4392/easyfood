@@ -56,7 +56,7 @@ export class OrderService {
     };
 
     const newOrder = await new this.orderModel(orderData);
-
+    console.log('New Order::', newOrder);
     const lineItems = createLineItems(data, restaurant.menuItems);
 
     const session = await this.stripeService.createCheckoutSession(
